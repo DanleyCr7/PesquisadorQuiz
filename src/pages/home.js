@@ -18,6 +18,7 @@ import {
 import share from '../../assets/share.png';
 import list from '../../assets/list.png';
 import geral from '../../assets/geral.png';
+import AsyncStorage from '@react-native-community/async-storage';
 
 // import { Container } from './styles';
 const { width, height } = Dimensions.get('window');
@@ -41,7 +42,8 @@ export default class pages extends Component {
   });
   sair = () => {
     firebase.auth().signOut()
-      .then(() => {
+      .then(async () => {
+        await AsyncStorage.removeItem('currentUser');
         this.props.navigation.replace('Login')
       }).catch(error => {
         Alert.alert('Error',
@@ -78,9 +80,7 @@ export default class pages extends Component {
           <TouchableOpacity style={styles.questions}>
             <Text style={styles.textQuiz}>Cronotipo de Munique</Text>
             <View style={styles.iconQuiz}>
-              <TouchableOpacity style={styles.bottonIcon} onPress={() => this.props.navigation.navigate('listAll', {
-                rota: 'CronotipoMunique'
-              })}>
+              <TouchableOpacity style={styles.bottonIcon} onPress={() => this.props.navigation.navigate('listAllMunique')}>
                 <Text style={styles.textIcon}>Lista geral</Text>
                 {/* <Image
                   style={styles.icon}
@@ -89,9 +89,7 @@ export default class pages extends Component {
                 // resizeMode='stretch'
                 /> */}
               </TouchableOpacity>
-              <TouchableOpacity style={styles.bottonIcon} onPress={() => this.props.navigation.navigate('list', {
-                rota: 'CronotipoMunique'
-              })}>
+              <TouchableOpacity style={styles.bottonIcon} onPress={() => this.props.navigation.navigate('listMunique')}>
                 <Text style={styles.textIcon}>Minha lista</Text>
                 {/* <Image
                   style={styles.icon}
@@ -152,7 +150,7 @@ export default class pages extends Component {
             <Text style={styles.textQuiz}>Questionario de Beck</Text>
             <View style={styles.iconQuiz}>
               <TouchableOpacity style={styles.bottonIcon} onPress={() => this.props.navigation.navigate('listAll', {
-                rota: 'Beck'
+                rota: 'beck1'
               })}>
                 <Text style={styles.textIcon}>Lista geral</Text>
                 {/* <Image
@@ -163,7 +161,7 @@ export default class pages extends Component {
                 /> */}
               </TouchableOpacity>
               <TouchableOpacity style={styles.bottonIcon} onPress={() => this.props.navigation.navigate('list', {
-                rota: 'Beck'
+                rota: 'beck1'
               })}>
                 <Text style={styles.textIcon}>Minha lista</Text>
                 {/* <Image
@@ -295,6 +293,43 @@ export default class pages extends Component {
             </View>
           </TouchableOpacity>
           {/* list */}
+          {/* list */}
+          <TouchableOpacity style={styles.questions}>
+            <Text style={styles.textQuiz}>Indice de sono Pisttsburgh</Text>
+            <View style={styles.iconQuiz}>
+              <TouchableOpacity style={styles.bottonIcon} onPress={() => this.props.navigation.navigate('listAll', {
+                rota: 'Pisttsburgh'
+              })}>
+                <Text style={styles.textIcon}>Lista geral</Text>
+                {/* <Image
+                  style={styles.icon}
+                  source={geral}
+                  aspectRatio={1}
+                // resizeMode='stretch'
+                /> */}
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.bottonIcon} onPress={() => this.props.navigation.navigate('list', {
+                rota: 'Pisttsburgh'
+              })}>
+                <Text style={styles.textIcon}>Minha lista</Text>
+                {/* <Image
+                  style={styles.icon}
+                  source={list}
+                  aspectRatio={1}
+                // resizeMode='stretch'
+                /> */}
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.bottonIcon2} onPress={() => this.onShare('pisttsburgh')}>
+                <Image
+                  style={styles.icon}
+                  source={share}
+                  aspectRatio={1}
+                // resizeMode='stretch'
+                />
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+          {/* list */}
         </View>
       </ScrollView>
     )
@@ -306,7 +341,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#e6eef0'
+    backgroundColor: '#252C4A'
   },
   questions: {
     width: width - 40,
@@ -337,7 +372,7 @@ const styles = StyleSheet.create({
   textQuiz: {
     fontSize: 18,
     // fontWeight: 'bold',
-    color: '#3B54B8',
+    color: '#fff',
     marginTop: 18
     // marginTop: 10,
     // marginLeft: 20,

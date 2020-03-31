@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, FlatList, Dimensions } from 'react-native';
 import firebase from 'firebase'
 import seta from '../../assets/seta.png';
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 const { width, height } = Dimensions.get('window')
 export default class pages extends Component {
@@ -16,7 +17,7 @@ export default class pages extends Component {
     }
   }
   async componentDidMount() {
-    const ref = firebase.database().ref(`${this.state.rota}`)
+    const ref = firebase.database().ref(`${this.state.rota}`).limitToLast(5)
     await ref.on('child_added', snapshot => {
       const { dado, resposta } = snapshot.val();
       // const { nome } = idPesquisador
@@ -48,7 +49,7 @@ export default class pages extends Component {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.detail}
-              onPress={() => this.props.navigation.navigate('detail', { detail: item })}>
+              onPress={() => this.props.navigation.navigate('detailAll', { detail: item })}>
               <View>
                 <Text style={styles.text}>{item.dado.nome}</Text>
                 <View style={{ flexDirection: 'row' }}>
@@ -56,16 +57,12 @@ export default class pages extends Component {
                   <Text style={styles.textDesc}>{item.dado.nomePesquisador}</Text>
                 </View>
               </View>
-              <Image
-                style={{ width: 15, height: 27, marginRight: 10 }}
-                source={seta}
-              // aspectRatio={1}
-              // resizeMode='stretch'
-              />
+              <Icon name="keyboard-arrow-right" size={32} color="#8F98C1" style={styles.icons} />
               {/* <Text>{item.resposta.question}</Text> */}
             </TouchableOpacity>
           )}
           keyExtractor={(item, index) => index.toString()}
+
         // numColumns={5}
         />
         {/* <Text>list</Text> */}

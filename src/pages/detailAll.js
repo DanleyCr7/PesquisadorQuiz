@@ -1,39 +1,13 @@
 import React, { Component } from 'react';
 import firebase from 'firebase'
 
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Dimensions, Image, ScrollView, Alert } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Dimensions, Image, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Icons from 'react-native-vector-icons/FontAwesome5'
 // Icon.loadFont();
 // import { Container } from './styles';
-
 const { width, height } = Dimensions.get('window')
 export default class pages extends Component {
-  // async deletar(volutario) {
-  //   // console.log(volutario.id)
-  //   const { params } = this.props.navigation.state;
-  //   const { rota } = params;
-  //   const { currentUser } = firebase.auth();
-  //   const id = currentUser.uid;
-  //   Alert.alert('Deletar',
-  //     `tem certeza que quer apagar os dados do volutário ${volutario.dado.nome}?`,
-  //     [{
-  //       text: 'Não',
-  //       onPress: () => {
-  //       },
-  //     }, {
-  //       text: 'Sim',
-  //       onPress: async () => {
-  //         // const { currentUser } = firebase.auth();
-  //         await firebase.database()
-  //           .ref(`/${id}/${rota}/${volutario.id}`)
-  //           .remove()
-  //       },
-  //     }],
-  //     // opção de obrigar o usuario escolher para deletar:
-  //     { cancelable: false }
-  //   )
-  // }
   render() {
     const { navigation } = this.props;
     const { detail } = navigation.state.params;
@@ -101,7 +75,6 @@ export default class pages extends Component {
               <Text> Data da coleta: </Text>
               <Text> {detail.dado.dataColeta}</Text>
             </View>
-
           </View>
           <Text style={{ fontWeight: 'bold', fontSize: 14, marginBottom: 10 }}>Respostas do voluntário</Text>
           <View style={styles.resposta}>
@@ -120,17 +93,7 @@ export default class pages extends Component {
               keyExtractor={(item, index) => index.toString()}
             />
           </View>
-          {/* <TouchableOpacity style={styles.Limpar} onPress={async () => {
-            const hasDeleted = await this.deletar(detail);
-            if (hasDeleted) {
-              console.log('Sucesso')
-            }
-          }
-          }>
-            <Text style={styles.textButton}>Deletar voluntário</Text>
-          </TouchableOpacity> */}
         </View>
-
       </ScrollView>
 
     )
@@ -197,24 +160,7 @@ const styles = StyleSheet.create({
   },
   icons: {
     marginLeft: 10
-  },
-  Limpar: {
-    height: 40,
-    width: width - 40,
-    backgroundColor: '#eb4c34',
-    // marginTop: 30,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    // borderWidth: 3,
-    borderColor: '#000',
-    marginBottom: 30
-  },
-  textButton: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#fff'
-  },
+  }
 })
 
 

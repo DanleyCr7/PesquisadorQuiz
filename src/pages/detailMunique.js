@@ -2,130 +2,81 @@ import React, { Component } from 'react';
 
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Dimensions, ScrollView, Image } from 'react-native';
 const { width, height } = Dimensions.get('window')
-// import { Container } from './styles';
-import nome from '../../assets/perfil/nome.png'
-import cidade from '../../assets/perfil/cidade.png'
-import curso from '../../assets/perfil/curso.png'
-import data from '../../assets/perfil/data.png'
-import altura from '../../assets/perfil/altura.png'
-import peso from '../../assets/perfil/peso.png'
-import email from '../../assets/perfil/email.png'
-import fone from '../../assets/perfil/fone.png'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import Icons from 'react-native-vector-icons/FontAwesome5'
 import dan from '../../assets/perfil/dan.jpg'
 export default class pages extends Component {
   render() {
     const { navigation } = this.props;
     const { detail } = navigation.state.params;
-    console.log(detail)
+    const { resposta } = detail
+    const { calculos } = resposta
+    // console.log(calculos)
     return (
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.perfil}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image
-                style={styles.imgPefil}
-                source={dan}
-                aspectRatio={1}
-              />
-              <Text style={{ fontSize: 22, color: '#fff' }}>{detail.dado.nome}</Text>
+              <Text style={{ fontSize: 22, color: '#fff', textAlign: 'center' }}>{detail.dado.nome}</Text>
             </View>
 
-            <View style={styles.cidadeView}>
+            <View style={styles.cidadeVIEW}>
               <Text style={styles.cidadeText}>{detail.dado.CidEst}</Text>
             </View>
           </View>
           <View style={styles.detailPerfil}>
-            <Text style={{ fontWeight: 'bold', fontSize: 14, margin: 7 }}>Detalhes do paciente</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 14, margin: 7 }}>Detalhes do voluntário</Text>
             <View style={styles.icon}>
-              <Image
-                style={styles.icons}
-                source={nome}
-                aspectRatio={1}
-              />
+              <Icon name="person" size={24} color="#000" style={styles.icons} />
               <Text> {detail.dado.nome}</Text>
             </View>
             <View style={styles.icon}>
-              <Image
-                style={styles.icons}
-                source={data}
-                aspectRatio={1}
-              />
+              <Icons name="weight" size={24} color="#000" style={styles.icons} />
+              <Text> {detail.dado.peso}KG</Text>
+              <Icons name="tape" size={24} color="#000" style={styles.icons} />
+              <Text> {detail.dado.altura}</Text>
+
+            </View>
+            <View style={styles.icon}>
+              <Icon name="date-range" size={24} color="#000" style={styles.icons} />
               <Text> Data de Nascimento: </Text>
               <Text> {detail.dado.dataNasc}</Text>
             </View>
             <View style={styles.icon}>
-              <Image
-                style={styles.icons}
-                source={email}
-                aspectRatio={1}
-              />
+              <Icon name="email" size={24} color="#000" style={styles.icons} />
               <Text> {detail.dado.email}</Text>
             </View>
             <View style={styles.icon}>
-              <Image
-                style={styles.icons}
-                source={fone}
-                aspectRatio={1}
-              />
+              <Icon name="call" size={24} color="#000" style={styles.icons} />
               <Text> {detail.dado.fone}</Text>
             </View>
             <View style={styles.icon}>
-              <Image
-                style={styles.icons}
-                source={curso}
-                aspectRatio={1}
-              />
+              <Icon name="school" size={24} color="#000" style={styles.icons} />
               <Text> {detail.dado.curso}  </Text>
               <Text> {detail.dado.periodo}º período</Text>
             </View>
+
             <View style={styles.icon}>
-              <Image
-                style={styles.icons}
-                source={data}
-                aspectRatio={1}
-              />
-              <Text> Data do coleta: </Text>
+              <Icon name="date-range" size={24} color="#000" style={styles.icons} />
+              <Text> Data da coleta: </Text>
               <Text> {detail.dado.dataColeta}</Text>
+            </View>
+            <View style={styles.icon}>
+              <Icon name="person" size={24} color="#000" style={styles.icons} />
+              <Text> Pesquisador: </Text>
+              <Text> {detail.dado.nomePesquisador}</Text>
             </View>
           </View>
           <View style={styles.detailPerfil}>
-            <Text style={{ fontWeight: 'bold', fontSize: 14, margin: 7 }}>Respostas do paciente</Text>
-            <View style={styles.viewInput}>
-              <Text style={styles.textRes}>{detail.resposta.pergunta01}</Text>
-            </View>
-            {/* <View style={styles.viewInput}>
-          <Text>{detail.resposta.pergunta02}</Text>
-        </View> */}
-            <View style={styles.viewInput}>
-              <Text style={styles.textRes}>{detail.resposta.pergunta03}</Text>
-            </View>
-            <View style={styles.viewInput}>
-              <Text style={styles.textRes}>{detail.resposta.pergunta04}</Text>
-            </View>
-            <View style={styles.viewInput}>
-              <Text style={styles.textRes}>{detail.resposta.pergunta05}</Text>
-            </View>
-            <View style={styles.viewInput}>
-              <Text style={styles.textRes}>{detail.resposta.pergunta06}</Text>
-            </View>
-            <View style={styles.viewInput}>
-              <Text style={styles.textRes}>{detail.resposta.pergunta07}</Text>
-            </View>
-            {/* <View style={styles.viewInput}>
-            <Text>{detail.resposta.pergunta08}</Text>
-          </View> */}
-            <View style={styles.viewInput}>
-              <Text style={styles.textRes}>{detail.resposta.pergunta09}</Text>
-            </View>
-            <View style={styles.viewInput}>
-              <Text style={styles.textRes}>{detail.resposta.pergunta10}</Text>
-            </View>
-            <View style={styles.viewInput}>
-              <Text style={styles.textRes}>{detail.resposta.pergunta11}</Text>
-            </View>
-            <View style={styles.viewInput}>
-              <Text style={styles.textRes2}>{detail.resposta.pergunta12}</Text>
-            </View>
+            <Text style={{ fontWeight: 'bold', fontSize: 17, margin: 7 }}>Calculos</Text>
+            <Text style={styles.calculos}>avsdT = {calculos.avsdT}</Text>
+            <Text style={styles.calculos}>jls = {calculos.jls}</Text>
+            <Text style={styles.calculos}>msfF = {calculos.msfF}</Text>
+            <Text style={styles.calculos}>msfSC = {calculos.msfSC}</Text>
+            <Text style={styles.calculos}>sdF = {calculos.sdF}</Text>
+            <Text style={styles.calculos}>sdT ={calculos.sdT}</Text>
+            <Text style={styles.calculos}>sonsetF ={calculos.sonsetF}</Text>
+            <Text style={styles.calculos}>sonsetT ={calculos.sonsetT}</Text>
           </View>
         </View>
       </ScrollView>
@@ -192,5 +143,10 @@ const styles = StyleSheet.create({
   viewInput: {
     marginLeft: 10,
     marginBottom: 5
+  },
+  calculos: {
+    marginLeft: 10,
+    marginBottom: 15,
+    fontSize: 16
   }
 })

@@ -11,9 +11,12 @@ import {
   Alert,
   ActivityIndicator,
   Dimensions,
+  Button
 } from 'react-native';
-import gitLab from '../../assets/git.png';
-import fundo from '../../assets/fundoLogin.png';
+import gitLab from '../../assets/colect.png';
+import AsyncStorage from '@react-native-community/async-storage';
+
+// import fundo from '../../assets/fundoLogin.png';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 Icon.loadFont();
 const { width, height } = Dimensions.get('window');
@@ -26,20 +29,36 @@ export default class App extends Component {
       senha: '',
       isLoading: false,
       message: '',
-      markers: [],
+      isTrue: true
     }
   }
+  async componentDidMount() {
+    const login = await AsyncStorage.getItem('login')
+    const senha = await AsyncStorage.getItem('senha')
+    await this.setState({ mail: login, senha: senha })
+  }
 
+  async verSenha() {
+    if (this.state.isTrue == false) {
+      this.setState({ isTrue: true })
+    } else {
+      this.setState({ isTrue: false })
+    }
+  }
   // faz a autenticaçao quando clica logar
-  tryLogin() {
-    this.props.navigation.navigate('Inicio', {
-      nome: this.state.nome
-    });
+  async tryLogin() {
+    // this.props.navigation.navigate('Inicio', {
+    //   nome: this.state.nome
+    // });
     this.setState({ isLoading: true })
     const { mail, senha } = this.state
     firebase.auth()
       .signInWithEmailAndPassword(mail,
-        senha).then(() => {
+        senha).then(async (response) => {
+          // console.log(response.user.uid)
+          await AsyncStorage.setItem('currentUser', response.user.uid)
+          await AsyncStorage.setItem('login', mail)
+          await AsyncStorage.setItem('senha', senha)
           this.props.navigation.replace('home', {
             nome: 'teste'
           });
@@ -52,7 +71,7 @@ export default class App extends Component {
 
   renderButton() {
     if (this.state.isLoading)
-      return <ActivityIndicator />;
+      return <ActivityIndicator style={{ marginTop: 40 }} />;
 
     return (
       <TouchableOpacity
@@ -102,6 +121,7 @@ export default class App extends Component {
             value={this.state.mail}
             onChangeText={mail => this.setState({ mail })}
           />
+          <Icon name="account" size={25} color="#8F98C1" style={{ marginRight: 5 }} />
         </View>
         <View style={styles.viewInput}>
           <TextInput
@@ -110,19 +130,32 @@ export default class App extends Component {
             autoCapitalize='none'
             placeholder='Senha'
             placeholderTextColor='#8F98C1'
-            secureTextEntry={true}
+            secureTextEntry={this.state.isTrue}
             value={this.state.senha}
             onChangeText={senha => this.setState({ senha })}
           />
+          <TouchableOpacity onPress={() => this.verSenha()}>
+            <Icon name="eye" size={25} color="#8F98C1" style={{ marginRight: 5 }} />
+          </TouchableOpacity>
         </View>
         {this.renderButton()}
         <Text
           onPress={() => {
-            this.props.navigation.navigate('CreateUser');
+            this.props.navigation.navigate('Pesquisador');
           }}
           style={styles.textInsc}
-        >Não tem uma conta?</Text>
-
+        >Não tem uma conta? Crie uma!</Text>
+        <Text
+          onPress={() => {
+            this.props.navigation.navigate('RecuperarSenha');
+          }}
+          style={{
+            color: '#039BE5',
+            fontSize: 18,
+            fontWeight: 'bold'
+          }}
+          type='clear'
+        >Esqueceu sua senha?</Text>
       </View>
     );
   }
@@ -137,7 +170,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#252C4A',
   },
-
   botao: {
     width: 250,
     height: 40,
@@ -155,24 +187,28 @@ const styles = StyleSheet.create({
   textInsc: {
     color: '#8F98C1',
     fontSize: 18,
-    marginTop: 10,
+    marginTop: 15,
+    marginBottom: 20
   },
   logo: {
-    width: 155,
-    height: 120,
+    width: 70,
+    height: 85,
   },
   viewInput: {
     height: 50,
-    width: 250,
+    width: width - 90,
     // backgroundColor: '#fff',
     borderRadius: 8,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     marginTop: 30,
     borderBottomWidth: 1,
     borderColor: '#8F98C1',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   input: {
     fontSize: 18,
-    color: '#8F98C1'
+    color: '#8F98C1',
+    width: '90%'
   },
 })

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-
 import { View, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import firebase from 'firebase'
-import gitLab from '../../assets/git.png';
-// import { Container } from './styles';
+import gitLab from '../../assets/colect.png';
+import AsyncStorage from '@react-native-community/async-storage';
 
+// import { Container } from './styles';
+var token = ''
 export default class pages extends Component {
-  componentDidMount() {
+  async componentDidMount() {
     // Your web app's Firebase configuration
     var firebaseConfig = {
       apiKey: "AIzaSyAcQ8jTZK6PPeQRKaO2txOmvpbRG7AqHSU",
@@ -21,9 +22,12 @@ export default class pages extends Component {
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
-    firebase.auth().onAuthStateChanged(user => {
-      this.props.navigation.replace(user ? 'home' : 'Login')
-    })
+
+    if (await AsyncStorage.getItem('currentUser')) {
+      this.props.navigation.replace('home')
+    } else {
+      this.props.navigation.replace('Login')
+    }
   }
   render() {
     return (
@@ -34,11 +38,7 @@ export default class pages extends Component {
         // aspectRatio={1}
         // resizeMode='stretch'
         />
-        <ActivityIndicator
-          // animating={animating}
-          color='#fff' // color of your choice
-          size="large"
-          style={styles.activityIndicator} />
+        <ActivityIndicator />
       </View>
     );
   }
@@ -52,14 +52,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   logo: {
-    width: 199,
-    height: 155,
+    width: 80,
+    height: 95,
     marginBottom: 10
   },
-  // activityIndicator: {
-  //   flex: 1,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   height: 80
-  // }
+
 })

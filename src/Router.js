@@ -5,11 +5,16 @@ import CreateUser from './pages/createUser';
 import listTeste from './pages/listTeste';
 import list from './pages/list';
 import listAll from './pages/listAll';
+import listAllMunique from './pages/listAllMunique';
+import listMunique from './pages/listMunique';
 import detailMunique from './pages/detailMunique';
 import detail from './pages/detail';
+import detailAll from './pages/detailAll';
 import home from './pages/home';
-import muniqueGeral from './pages/muniqueGeral';
+// import muniqueGeral from './pages/muniqueGeral';
 import veri from './pages/verificacao';
+import Pesquisador from './pages/pesquisador';
+import RecuperarSenha from './pages/RecuperarSenha';
 
 
 const Router = createStackNavigator({
@@ -23,6 +28,12 @@ const Router = createStackNavigator({
     screen: Login,
     navigationOptions: {
       title: 'Bem Vindo',
+    }
+  },
+  'RecuperarSenha': {
+    screen: RecuperarSenha,
+    navigationOptions: {
+      title: 'Resetar senha',
     }
   },
   'home': {
@@ -44,14 +55,44 @@ const Router = createStackNavigator({
       title: 'Lista geral',
     }
   },
+  'listAllMunique': {
+    screen: listAllMunique,
+    navigationOptions: {
+      title: 'Lista geral',
+    }
+  },
+  'listMunique': {
+    screen: listMunique,
+    navigationOptions: {
+      title: 'Lista',
+    }
+  },
   'CreateUser': {
     screen: CreateUser,
     navigationOptions: {
       title: 'Criar Usuario',
     }
   },
+  'Pesquisador': {
+    screen: Pesquisador,
+    navigationOptions: {
+      title: 'Cadastro',
+    }
+  },
   'detail': {
     screen: detail,
+    navigationOptions: {
+      title: 'Detalhes',
+    }
+  },
+  'detailAll': {
+    screen: detailAll,
+    navigationOptions: {
+      title: 'Detalhes',
+    }
+  },
+  'detailMunique': {
+    screen: detailMunique,
     navigationOptions: {
       title: 'Detalhes',
     }

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 
-import { View, Text, TouchableOpacity, StyleSheet, Image, FlatList, Dimensions, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, FlatList, Dimensions } from 'react-native';
 import firebase from 'firebase'
-import Icon from 'react-native-vector-icons/MaterialIcons'
 import seta from '../../assets/seta.png';
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
-// import { Container } from './styles';
 const { width, height } = Dimensions.get('window')
 export default class pages extends Component {
   constructor(props) {
@@ -13,47 +12,57 @@ export default class pages extends Component {
     this.state = {
       list: [],
       rota: '',
-
+      // id: ''
       // coordinate:{}
     }
   }
   async componentDidMount() {
-    const { currentUser } = firebase.auth();
-    const id = currentUser.uid;
-    const ref = firebase.database().ref(`${id}/${this.state.rota}`)
-    await ref.on('child_added', async (snapshot) => {
-      const { dado, resposta } = snapshot.val()
-      await this.state.list.push({
-        id: snapshot.key,
+    const ref = firebase.database().ref(`CronotipoMunique`)
+    await ref.on('child_added', snapshot => {
+      const { dado, resposta } = snapshot.val();
+      // const { nome } = idPesquisador
+      this.state.list.push({
         resposta: resposta,
         dado: dado
       });
-      await this.setState({ list: [...this.state.list] })
+      this.setState({ list: [...this.state.list] })
     })
+
   }
+  // async pesquisador() {
+  //   const ref = firebase.database().ref(`${this.state.id}`)
+  //   await ref.on('value', snapshot => {
+  //     const { nome } = snapshot.val();
+  //     this.setState({ nome: nome })
+  //   })
+  // }
 
   render() {
-    const { params } = this.props.navigation.state;
-    const { rota } = params;
-    this.state.rota = rota
     return (
-      <View style={styles.container} >
+      <View style={styles.container}>
         <FlatList
           data={this.state.list}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.detail}
-              onPress={() => this.props.navigation.navigate('detail', { detail: item, rota: rota })}>
+              onPress={() => this.props.navigation.navigate('detailMunique', { detail: item })}>
               <View>
                 <Text style={styles.text}>{item.dado.nome}</Text>
-                <Text style={styles.textDesc}>{item.dado.curso}</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={styles.textDesc}>Pesquisador:</Text>
+                  <Text style={styles.textDesc}>{item.dado.nomePesquisador}</Text>
+                </View>
               </View>
               <Icon name="keyboard-arrow-right" size={32} color="#8F98C1" style={styles.icons} />
+              {/* <Text>{item.resposta.question}</Text> */}
             </TouchableOpacity>
           )}
           keyExtractor={(item, index) => index.toString()}
+
+        // numColumns={5}
         />
+        {/* <Text>list</Text> */}
       </View>
     )
   }
@@ -63,12 +72,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    // justifyContent: 'center'
     backgroundColor: '#252C4A'
+    // justifyContent: 'center'
   },
   detail: {
     borderBottomWidth: 0.3,
-    width: width - 5,
+    width: width - 10,
     height: 50,
     borderRadius: 8,
     marginTop: 10,
@@ -80,9 +89,9 @@ const styles = StyleSheet.create({
   },
   text: {
     // marginTop: 40,
-    color: '#8F98C1',
     fontSize: 18,
-    marginLeft: 8
+    marginLeft: 8,
+    color: '#8F98C1'
   },
   textDesc: {
     color: '#999',
